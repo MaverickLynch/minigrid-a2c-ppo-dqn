@@ -1,0 +1,4 @@
+tensorboard
+tensorboardX>=1.6
+numpy>=1.3
+

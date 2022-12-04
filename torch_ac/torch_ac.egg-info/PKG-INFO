@@ -1,0 +1,4 @@
+Metadata-Version: 2.1
+Name: torch-ac
+Version: 1.1.0
+Keywords: reinforcement learning,actor-critic,a2c,ppo,multi-processes,gpu

@@ -14,6 +14,8 @@ parser.add_argument("--env", required=True,
                     help="name of the environment to be run (REQUIRED)")
 parser.add_argument("--model", required=True,
                     help="name of the trained model (REQUIRED)")
+parser.add_argument("--algo", required=True,
+                    help="name of the algo (REQUIRED)")
 parser.add_argument("--seed", type=int, default=0,
                     help="random seed (default: 0)")
 parser.add_argument("--shift", type=int, default=0,
@@ -22,6 +24,8 @@ parser.add_argument("--argmax", action="store_true", default=False,
                     help="select the action with highest probability (default: False)")
 parser.add_argument("--pause", type=float, default=0.1,
                     help="pause duration between two consequent actions of the agent (default: 0.1)")
+parser.add_argument("--procs", type=int, default=16,
+                    help="number of processes (default: 16)")
 parser.add_argument("--gif", type=str, default=None,
                     help="store output as gif with the given filename")
 parser.add_argument("--episodes", type=int, default=1000000,
@@ -51,16 +55,20 @@ print("Environment loaded\n")
 # Load agent
 
 model_dir = utils.get_model_dir(args.model)
-agent = utils.ACAgent(env.observation_space, env.action_space, model_dir,
-                    argmax=args.argmax, use_memory=args.memory, use_text=args.text)
+if args.algo == 'dqn':
+    agent = utils.DQNAgent(env.observation_space, env.action_space, model_dir,
+                        device=device, argmax=args.argmax, num_envs=args.procs)
+else:
+    agent = utils.ACAgent(env.observation_space, env.action_space, model_dir,
+                        device=device, argmax=args.argmax, num_envs=args.procs,
+                        use_memory=args.memory, use_text=args.text)
 print("Agent loaded\n")
 
 # Run the agent
 
 if args.gif:
     from array2gif import write_gif
-
-    frames = []
+frames = []
 
 # Create a window to view the environment
 env.render()

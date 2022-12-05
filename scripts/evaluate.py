@@ -1,4 +1,4 @@
-import _init_paths
+#import _init_paths
 import argparse
 import time
 import torch
@@ -63,6 +63,9 @@ else:
                         device=device, argmax=args.argmax, num_envs=args.procs,
                         use_memory=args.memory, use_text=args.text)
 print("Agent loaded\n")
+
+
+
 
 # Initialize logs
 
